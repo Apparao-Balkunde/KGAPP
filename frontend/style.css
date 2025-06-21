@@ -1,1 +1,26 @@
-body { margin: 0; font-family: sans-serif; }
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f5f1;
+  overflow: hidden;
+}
+
+h1 {
+  text-align: center;
+  margin: 10px;
+  color: #333;
+}
+
+#gameCanvas {
+  display: block;
+  margin: 0 auto;
+  background-color: #e0ffe0;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+#miniMap {
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}

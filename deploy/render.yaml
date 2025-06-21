@@ -1,10 +1,11 @@
 services:
   - type: web
-    name: kokan-gaon-backend
+    name: kokan-backend
     env: python
-    plan: free
-    buildCommand: "pip install -r backend/requirements.txt"
-    startCommand: "python backend/app.py"
+    buildCommand: ""
+    startCommand: python app.py
     envVars:
       - key: FLASK_ENV
-        value: production
+        value: development
+    plan: free
+    region: singapore
