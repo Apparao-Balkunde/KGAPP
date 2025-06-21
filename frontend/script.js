@@ -1,4 +1,4 @@
-const socket = io("https://kgapp1.onrender.com", {
+const socket = io("https://kgapp.onrender.com", {
   transports: ["websocket"],
   withCredentials: false
 });
