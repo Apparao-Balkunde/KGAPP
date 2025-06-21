@@ -1,26 +1,32 @@
 body {
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
+  background-color: #eef4ea;
+  text-align: center;
   margin: 0;
-  padding: 0;
-  background-color: #f0f5f1;
-  overflow: hidden;
+  padding: 20px;
 }
 
 h1 {
-  text-align: center;
-  margin: 10px;
-  color: #333;
+  color: #2e7d32;
+  font-size: 28px;
+  margin-bottom: 10px;
 }
 
-#gameCanvas {
+#menu {
+  margin-bottom: 15px;
+}
+
+canvas {
+  margin: 10px auto;
   display: block;
-  margin: 0 auto;
-  background-color: #e0ffe0;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  border: 2px solid #444;
+  background-color: #ffffff;
 }
 
 #miniMap {
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border: 1px solid #888;
+  background-color: #e0f7fa;
 }
