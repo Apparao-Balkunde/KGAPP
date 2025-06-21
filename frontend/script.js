@@ -3,63 +3,65 @@ const socket = io("https://kgapp.onrender.com/", {
   withCredentials: false
 });
 
-let playerId = null;
 let players = {};
+let playerId = null;
 
-function joinGame() {
-  const name = document.getElementById("username").value;
-  socket.emit("join", { name: name });
-  document.getElementById("ui").style.display = "none";
-}
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-// Receive info when a player joins
-socket.on("player_joined", (data) => {
-  playerId = socket.id;
-  players = data.players;
-  console.log("Players connected:", players);
-  renderPlayers();
-});
+const miniCanvas = document.getElementById('miniMap');
+const miniCtx = miniCanvas.getContext('2d');
 
-// Receive movement of other players
-socket.on("player_moved", (data) => {
-  if (players[data.id]) {
-    players[data.id].x = data.x;
-    players[data.id].y = data.y;
-    renderPlayers();
-  }
-});
+let x = 100, y = 100;
 
-// Player left
-socket.on("player_left", (data) => {
-  delete players[data.id];
-  renderPlayers();
-});
-
-// Movement with arrow keys
-document.addEventListener("keydown", (e) => {
-  if (!players[playerId]) return;
-
-  if (e.key === "ArrowUp") players[playerId].y -= 5;
-  if (e.key === "ArrowDown") players[playerId].y += 5;
-  if (e.key === "ArrowLeft") players[playerId].x -= 5;
-  if (e.key === "ArrowRight") players[playerId].x += 5;
-
-  socket.emit("move", { x: players[playerId].x, y: players[playerId].y });
-  renderPlayers();
-});
-
-// Simple player render on canvas
-function renderPlayers() {
-  const canvas = document.getElementById("gameCanvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function drawMainCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  Object.keys(players).forEach((id) => {
+  for (let id in players) {
     const p = players[id];
-    ctx.fillStyle = id === playerId ? "blue" : "gray";
-    ctx.fillRect(p.x, p.y, 20, 20);
-    ctx.fillText(p.name, p.x, p.y - 5);
-  });
+    ctx.fillStyle = id === playerId ? 'blue' : 'green';
+    ctx.fillRect(p.x, p.y, 30, 30);
+    ctx.fillStyle = 'black';
+    ctx.fillText(id.substring(0, 4), p.x, p.y - 5);
+  }
 }
+
+function drawMiniMap() {
+  miniCtx.clearRect(0, 0, miniCanvas.width, miniCanvas.height);
+
+  for (let id in players) {
+    const p = players[id];
+    const miniX = (p.x / canvas.width) * miniCanvas.width;
+    const miniY = (p.y / canvas.height) * miniCanvas.height;
+    miniCtx.fillStyle = id === playerId ? 'blue' : 'green';
+    miniCtx.beginPath();
+    miniCtx.arc(miniX, miniY, 4, 0, 2 * Math.PI);
+    miniCtx.fill();
+  }
+}
+
+function gameLoop() {
+  drawMainCanvas();
+  drawMiniMap();
+  requestAnimationFrame(gameLoop);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowUp') y -= 5;
+  if (e.key === 'ArrowDown') y += 5;
+  if (e.key === 'ArrowLeft') x -= 5;
+  if (e.key === 'ArrowRight') x += 5;
+
+  socket.emit('move', { x, y });
+});
+
+socket.on('connect', () => {
+  playerId = socket.id;
+  socket.emit('new_player', { x, y });
+});
+
+socket.on('player_data', (data) => {
+  players = data;
+});
+
+gameLoop();

@@ -3,17 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kokan Gaon Multiplayer Game</title>
+  <title>Kokan Gaon Game</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="ui">
-    <input type="text" id="username" placeholder="Enter name" />
-    <button onclick="joinGame()">Join Game</button>
-  </div>
-  <canvas id="gameCanvas"></canvas>
 
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <!-- Game Header -->
+  <h1>Kokan Gaon Multiplayer Game</h1>
+
+  <!-- Main Game Canvas -->
+  <canvas id="gameCanvas" width="800" height="600" style="border: 1px solid #444;"></canvas>
+
+  <!-- Mini Map Canvas -->
+  <canvas id="miniMap" width="150" height="150" 
+          style="position: absolute; bottom: 20px; right: 20px; border: 2px solid #333; background: #fff;"></canvas>
+
+  <!-- Script -->
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
